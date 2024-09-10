@@ -2,7 +2,8 @@ keywords = {'move','delete','copy','date','size','text','filetype'}
 
 accepting_states = {
     'D9': 'PUNCTUATOR',
-    'D23': 'KEYWORD',
+    'D20': 'FILE.EXTENSION',
+    'D23': 'FILE.PATH',
     'D33': 'KEYWORD',
     'D32': 'KEYWORD',
     'D37': 'KEYWORD',
