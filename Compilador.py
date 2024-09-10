@@ -2467,6 +2467,6 @@ def tokenize(input_string):
 
     return tokens
 
-input_string = "prueba aqui"
-tokens = tokenize(input_string)
+user_input = input("Enter a string to tokenize: ")
+tokens = tokenize(user_input)
 print("Tokens:", tokens)
