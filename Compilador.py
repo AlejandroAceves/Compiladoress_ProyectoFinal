@@ -2429,15 +2429,19 @@ transition_table = {
 tokens = []
 
 def tokenize(input_string):
-    global tokens  # Usar la lista de tokens definida arriba
+    global tokens
     current_state = 'D0'
     current_token = ''
     i = 0 
     
     while i < len(input_string):
-        symbol = input_string[i].lower()  # Convierte a minúsculas
+        symbol = input_string[i].lower()
 
-        # Verifica si el símbolo está en la tabla de transiciones
+        # Omitir espacios en blanco
+        if symbol.isspace():
+            i += 1
+            continue
+
         if symbol in transition_table[current_state]:
             current_token += symbol
             current_state = transition_table[current_state][symbol]
@@ -2446,20 +2450,16 @@ def tokenize(input_string):
             print(f"Error: Unexpected symbol '{symbol}' at state {current_state}")
             return []
 
-        # Si el estado actual es final/aceptante
         if current_state in accepting_states:
             token_type = accepting_states[current_state]
 
-            # Verifica si el token es una palabra clave
             if token_type == 'KEYWORD' and current_token.lower() in keywords:
                 token_type = 'KEYWORD'
 
-            # Añade el token a la lista
             tokens.append({'value': current_token, 'type': token_type})
             current_token = ''
-            current_state = 'D0'  # Reinicia al estado inicial
+            current_state = 'D0'  
 
-    # Tokens restantes
     if current_token and current_state in accepting_states:
         token_type = accepting_states[current_state]
         if token_type == 'KEYWORD' and current_token.lower() in keywords:
