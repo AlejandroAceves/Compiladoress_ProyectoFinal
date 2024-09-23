@@ -2427,47 +2427,50 @@ transition_table = {
     }
 }
 def tokenize(input_string):
-    
-    #Initialize
+    # Inicializa
     current_state = 'D0'
     tokens = []
     current_token = ''
     i = 0 
+    
     while i < len(input_string):
-        symbol = input_string[i].lower()  # toLowercase
+        symbol = input_string[i].lower()  # Convierte a minúsculas
 
-        # simbol in table
+        # Verifica si el símbolo está en la tabla de transiciones
         if symbol in transition_table[current_state]:
             current_token += symbol
             current_state = transition_table[current_state][symbol]
             i += 1  
         else:
-            # error state
+            # Estado de error
             print(f"Error: Unexpected symbol '{symbol}' at state {current_state}")
             return []
 
-        # if current state is final/accepting
+        # Si el estado actual es final/aceptante
         if current_state in accepting_states:
             token_type = accepting_states[current_state]
 
-            # Check token == keyword
+            # Verifica si el token es una palabra clave
             if token_type == 'KEYWORD' and current_token.lower() in keywords:
                 token_type = 'KEYWORD'
 
-            # token  list
-            tokens.append((current_token, token_type))
+            # Añade el token a la lista en formato de diccionario
+            tokens.append({'value': current_token, 'type': token_type})
             current_token = ''
-            current_state = 'D0'  # Reset start state
+            current_state = 'D0'  # Reinicia al estado inicial
 
-    # ramining tokens
+    # Tokens restantes
     if current_token and current_state in accepting_states:
         token_type = accepting_states[current_state]
         if token_type == 'KEYWORD' and current_token.lower() in keywords:
             token_type = 'KEYWORD'
-        tokens.append((current_token, token_type))
+        tokens.append({'value': current_token, 'type': token_type})
 
     return tokens
 
-user_input = input("Enter a string to tokenize: ")
-tokens = tokenize(user_input)
+# Lee el contenido del archivo de entrada
+with open("input.txt", "r") as file:
+    input_string = file.read()
+
+tokens = tokenize(input_string)
 print("Tokens:", tokens)
